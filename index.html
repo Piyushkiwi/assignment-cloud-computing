@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quantum Git - The Ultimate Command Guide</title>
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --text-color: #c9d1d9;
+      --accent-color: #58a6ff;
+      --border-color: #30363d;
+      --code-bg: #21262d;
+      --code-text: #79c0ff;
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .background-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(
+          to right,
+          var(--border-color) 1px,
+          transparent 1px
+        ),
+        linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      opacity: 0.1;
+      animation: pan-grid 60s linear infinite;
+    }
+
+    @keyframes pan-grid {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: -5000px -5000px;
+      }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 0;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+      animation: neon-glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes neon-glow {
+      from {
+        text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
+      }
+      to {
+        text-shadow: 0 0 15px var(--accent-color), 0 0 25px var(--accent-color);
+      }
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #8b949e;
+      margin-top: 1rem;
+      letter-spacing: 1px;
+    }
+
+    .command-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .command-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(88, 166, 255, 0.2),
+        transparent
+      );
+      animation: rotate-border 4s linear infinite;
+      z-index: 0;
+      opacity: 0.2;
+    }
+
+    .command-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .command-section h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .command-section h2::before {
+      content: '>';
+      color: var(--code-text);
+      margin-right: 10px;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      from,
+      to {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .command-section p {
+      color: #8b949e;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .command-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+      overflow-x: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .command-block code {
+      font-family: 'Roboto Mono', monospace;
+      color: var(--code-text);
+      font-size: 1rem;
+      display: block;
+      white-space: pre;
+    }
+
+    .highlight {
+      color: #c9d1d9;
+      font-weight: bold;
+    }
+
+    .tooltip {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(88, 166, 255, 0.1);
+      color: var(--accent-color);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .command-section:hover .tooltip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: #484f58;
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 4rem;
+    }
+
+    @keyframes rotate-border {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Scroll animations */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .animate-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="background-grid"></div>
+  <div class="container">
+    <header class="animate__animated animate__fadeInDown">
+      <h1>Quantum Git</h1>
+      <p>Master the essentials of version control with our futuristic guide.</p>
+    </header>
+
+    <main>
+      <div class="command-section animate-on-scroll" data-command="git init">
+        <h2>1. git init</h2>
+        <p>
+          Initializes a new Git repository, transforming your current directory into a tracked project. This command creates a hidden <code>.git</code> folder, the core of your repository's history and configuration.
+        </p>
+        <div class="command-block">
+          <code><span class="highlight">git init</span></code>
+        </div>
+        <span class="tooltip">Initialize Repository</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git clone">
+        <h2>2. git clone</h2>
+        <p>
+          Clones an existing remote repository onto your local machine. This is your entry point to a project, downloading all files, branches, and commit history from the specified URL.
+        </p>
+        <div class="command-block">
+          <code><span class="highlight">git clone</span> https://github.com/username/repository.git</code>
+        </div>
+        <span class="tooltip">Clone Remote Repo</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git status">
+        <h2>3. git status</h2>
+        <p>
+          Displays the state of your working directory and staging area. Use this to see which files are modified, staged, or untracked, providing a clear overview before you commit.
+        </p>
+        <div class="command-block">
+          <code><span class="highlight">git status</span></code>
+        </div>
+        <span class="tooltip">Check Status</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git add">
+        <h2>4. git add</h2>
+        <p>
+          Moves changes from your working directory to the staging area. Think of this as preparing your changes for the next commit. You can add specific files or all changes at once.
+        </p>
+        <div class="command-block">
+          <code>
+            <span class="highlight">git add</span> filename.txt<br />
+            <span class="highlight">git add</span> . # Add all changes
+          </code>
+        </div>
+        <span class="tooltip">Stage Files</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git commit">
+        <h2>5. git commit</h2>
+        <p>
+          Saves the staged changes permanently to your repository history. Every commit should have a descriptive message, acting as a snapshot of your project at that moment.
+        </p>
+        <div class="command-block">
+          <code><span class="highlight">git commit</span> -m "Descriptive commit message"</code>
+        </div>
+        <span class="tooltip">Create a Commit</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git push">
+        <h2>6. git push</h2>
+        <p>
+          Transfers your local commits to a remote repository, such as GitHub. This command synchronizes your work with the shared project, making your changes visible to others.
+        </p>
+        <div class="command-block">
+          <code><span class="highlight">git push</span> origin main</code>
+        </div>
+        <span class="tooltip">Push to Remote</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git pull">
+        <h2>7. git pull</h2>
+        <p>
+          Fetches and merges changes from the remote repository into your current local branch. This is how you update your project with the latest work from your collaborators.
+        </p>
+        <div class="command-block">
+          <code><span class="highlight">git pull</span> origin main</code>
+        </div>
+        <span class="tooltip">Pull from Remote</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git branch">
+        <h2>8. git branch</h2>
+        <p>
+          Manages your project's branches. You can use it to list all existing branches or to create a new one, isolating new features or bug fixes from your main codebase.
+        </p>
+        <div class="command-block">
+          <code>
+            <span class="highlight">git branch</span> # List all branches<br />
+            <span class="highlight">git branch</span> new-feature # Create a new branch
+          </code>
+        </div>
+        <span class="tooltip">Manage Branches</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git checkout">
+        <h2>9. git checkout</h2>
+        <p>
+          Switches between branches or restores files. This is your primary tool for navigating different versions of your project and working on isolated features.
+        </p>
+        <div class="command-block">
+          <code><span class="highlight">git checkout</span> new-feature</code>
+        </div>
+        <span class="tooltip">Switch Branch</span>
+      </div>
+
+      <div class="command-section animate-on-scroll" data-command="git merge">
+        <h2>10. git merge</h2>
+        <p>
+          Combines the history of one branch into another. Once a feature is complete, you use this command to integrate its changes back into your main branch.
+        </p>
+        <div class="command-block">
+          <code><span class="highlight">git merge</span> new-feature</code>
+        </div>
+        <span class="tooltip">Merge Branches</span>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2025 Quantum Git | Developed with <span style="color:#d73a49">&lt;code&gt;</span> by Ritik Ranjan
+    </footer>
+  </div>
+
+  <script>
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.animate-on-scroll').forEach((section) => {
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>
